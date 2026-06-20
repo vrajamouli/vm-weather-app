@@ -14,17 +14,44 @@ function formatDate(dateStr: string): string {
 
 export default function WeeklyForecast({ days, unit }: Props) {
   return (
-    <div className="rounded-xl bg-white border border-gray-200 p-6">
-      <h2 className="mb-4 text-lg font-semibold text-gray-800">7-Day Forecast</h2>
-      <div className="flex flex-col divide-y divide-gray-100">
+    <div className="overflow-hidden rounded-2xl bg-white">
+      <div className="border-b border-gray-100 px-6 py-4">
+        <h2 className="text-xs font-medium uppercase tracking-widest text-gray-400">
+          7-Day Forecast
+        </h2>
+      </div>
+      <div className="divide-y divide-gray-50">
         {days.map((day) => (
-          <div key={day.date} className="flex items-center justify-between py-3">
-            <span className="w-28 text-sm font-medium text-gray-700">{formatDate(day.date)}</span>
-            <span className="flex-1 text-sm text-gray-500">{day.condition}</span>
-            <span className="text-sm text-blue-600 w-10 text-right">{day.precipitationChance}%</span>
-            <div className="ml-4 flex gap-2 text-sm font-semibold">
-              <span className="text-gray-800">H: {Math.round(day.high)}{unitSymbol(unit)}</span>
-              <span className="text-gray-400">L: {Math.round(day.low)}{unitSymbol(unit)}</span>
+          <div key={day.date} className="flex items-center gap-3 px-6 py-3.5">
+            <span
+              className="w-24 shrink-0 text-sm font-medium text-gray-700"
+              style={{ fontFamily: "'DM Mono', monospace" }}
+            >
+              {formatDate(day.date)}
+            </span>
+            <span className="min-w-0 flex-1 truncate text-sm text-gray-400">
+              {day.condition}
+            </span>
+            <span
+              className="w-8 shrink-0 text-right text-sm font-medium"
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                color: day.precipitationChance > 0 ? '#2563EB' : '#D1D5DB',
+              }}
+            >
+              {day.precipitationChance}%
+            </span>
+            <div
+              className="shrink-0 text-sm"
+              style={{ fontFamily: "'DM Mono', monospace" }}
+            >
+              <span className="font-medium text-gray-900">
+                H: {Math.round(day.high)}{unitSymbol(unit)}
+              </span>
+              <span className="mx-1 text-gray-300">/</span>
+              <span className="text-gray-400">
+                L: {Math.round(day.low)}{unitSymbol(unit)}
+              </span>
             </div>
           </div>
         ))}

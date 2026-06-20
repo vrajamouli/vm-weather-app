@@ -61,12 +61,43 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen px-4 py-8" style={{ background: '#EEF0F4' }}>
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900">Weather App</h1>
 
-        <div className="rounded-xl bg-white p-6 shadow-sm">
-          {/* Selection */}
+        {/* Header */}
+        <div className="mb-5 flex items-center justify-between">
+          <span
+            className="text-xs font-medium uppercase tracking-widest text-gray-400"
+            style={{ fontFamily: "'DM Mono', monospace" }}
+          >
+            Weather
+          </span>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setUnit('celsius')}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                unit === 'celsius'
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-400 hover:text-gray-700'
+              }`}
+            >
+              °C
+            </button>
+            <button
+              onClick={() => setUnit('fahrenheit')}
+              className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                unit === 'fahrenheit'
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-400 hover:text-gray-700'
+              }`}
+            >
+              °F
+            </button>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="rounded-2xl bg-white px-6 py-5 shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row">
             <div className="flex-1">
               <CountryDropdown value={countryCode} onChange={handleCountryChange} />
@@ -80,63 +111,54 @@ export default function App() {
               />
             </div>
           </div>
-
-          {/* Controls */}
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-4 flex items-center gap-4">
             <button
               onClick={handleRefresh}
               disabled={!selectedCity}
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+              className="rounded-lg bg-gray-900 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-30"
             >
               Refresh
             </button>
             <button
               onClick={handleClear}
-              className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="text-sm text-gray-400 transition-colors hover:text-gray-700"
             >
               Clear
             </button>
-            <div className="ml-auto flex items-center gap-2">
-              <span className="text-sm text-gray-600">Unit:</span>
-              <button
-                onClick={() => setUnit('celsius')}
-                className={`rounded px-3 py-1 text-sm font-medium ${unit === 'celsius' ? 'bg-blue-600 text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'}`}
-              >
-                °C
-              </button>
-              <button
-                onClick={() => setUnit('fahrenheit')}
-                className={`rounded px-3 py-1 text-sm font-medium ${unit === 'fahrenheit' ? 'bg-blue-600 text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'}`}
-              >
-                °F
-              </button>
-            </div>
           </div>
-
-          {/* Weather Display */}
-          {fetchState.status === 'loading' && (
-            <div role="status" className="mt-6 flex items-center justify-center py-8">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" aria-label="Loading" />
-              <span className="ml-3 text-gray-500">Fetching weather data…</span>
-            </div>
-          )}
-
-          {fetchState.status === 'error' && (
-            <div role="alert" className="mt-6 rounded-xl bg-red-50 p-4">
-              <p className="text-sm text-red-700">{fetchState.message}</p>
-              <button
-                onClick={handleRefresh}
-                className="mt-2 text-sm font-medium text-red-700 underline hover:text-red-900"
-              >
-                Try again
-              </button>
-            </div>
-          )}
-
-          {fetchState.status === 'success' && (
-            <WeatherDisplay data={fetchState.data} unit={unit} />
-          )}
         </div>
+
+        {/* Loading */}
+        {fetchState.status === 'loading' && (
+          <div role="status" className="mt-4 flex items-center justify-center py-14">
+            <div
+              className="h-5 w-5 animate-spin rounded-full border-2 border-t-transparent"
+              aria-label="Loading"
+              style={{ borderColor: '#D1D5DB', borderTopColor: 'transparent' }}
+            />
+            <span className="ml-3 text-sm text-gray-400">Fetching weather data…</span>
+          </div>
+        )}
+
+        {/* Error */}
+        {fetchState.status === 'error' && (
+          <div role="alert" className="mt-4 rounded-2xl bg-white px-6 py-5 shadow-sm">
+            <p className="text-sm text-gray-700">{fetchState.message}</p>
+            <button
+              onClick={handleRefresh}
+              className="mt-2 text-sm font-medium text-gray-900 underline underline-offset-2 hover:text-gray-600"
+            >
+              Try again
+            </button>
+          </div>
+        )}
+
+        {/* Weather */}
+        {fetchState.status === 'success' && (
+          <div className="mt-4">
+            <WeatherDisplay data={fetchState.data} unit={unit} />
+          </div>
+        )}
       </div>
     </div>
   )

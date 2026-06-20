@@ -10,7 +10,7 @@ interface Props {
 
 export default function WeatherDisplay({ data, unit }: Props) {
   return (
-    <div className="mt-6 flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <CurrentConditions data={data.current} unit={unit} />
       <HourlyForecast slots={data.hourly} unit={unit} />
       <WeeklyForecast days={data.daily} unit={unit} />
